@@ -1,0 +1,111 @@
+---
+const links = [
+  { href: '/',          label: 'Inicio' },
+  { href: '/#servicios',label: 'Servicios' },
+  { href: '/#nosotros', label: 'Nosotros' },
+  { href: '/#equipo',   label: 'Equipo' },
+  { href: '/#contacto', label: 'Contacto' },
+];
+---
+
+<header id="site-header" style="position:fixed;top:0;left:0;right:0;z-index:100;background:#222227;transition:box-shadow .3s;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:80px;">
+
+    <!-- Logo -->
+    <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-family:'Prata',serif;font-size:22px;color:#fff;letter-spacing:3px;text-transform:uppercase;">
+        Book<span style="color:#9e8a78;">Style</span>
+      </span>
+      <span style="font-family:'Work Sans',sans-serif;font-size:9px;color:#9e8a78;letter-spacing:4px;text-transform:uppercase;margin-top:2px;">
+        Barbería & Salón
+      </span>
+    </a>
+
+    <!-- Nav desktop -->
+    <nav id="desktop-nav" style="display:flex;align-items:center;gap:36px;">
+      {links.map(l => (
+        <a href={l.href}
+          style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ddd;text-decoration:none;transition:color .3s;"
+          onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ddd'">
+          {l.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- CTA + hamburger -->
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="/agendar" class="btn-gold" style="font-size:11px;height:42px;line-height:42px;padding:0 22px;text-decoration:none;">
+        <span>Agendar Cita</span>
+      </a>
+      <button id="hamburger" aria-label="Menú" style="display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;">
+        <span class="hline" style="display:block;width:24px;height:2px;background:#fff;transition:all .3s;"></span>
+        <span class="hline" style="display:block;width:24px;height:2px;background:#fff;transition:all .3s;"></span>
+        <span class="hline" style="display:block;width:24px;height:2px;background:#fff;transition:all .3s;"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-nav" style="display:none;background:#222227;border-top:1px solid #333;padding:16px 24px 20px;">
+    {links.map(l => (
+      <a href={l.href} class="mob-link"
+        style="display:block;padding:12px 0;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ddd;text-decoration:none;border-bottom:1px solid #333;">
+        {l.label}
+      </a>
+    ))}
+    <a href="/agendar" class="btn-gold" style="display:block;text-align:center;margin-top:16px;text-decoration:none;">
+      <span>Agendar Cita</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  const desktopNav = document.getElementById('desktop-nav');
+
+  // Responsive: show/hide hamburger
+  function checkWidth() {
+    if (window.innerWidth < 900) {
+      (hamburger as HTMLElement).style.display = 'flex';
+      (desktopNav as HTMLElement).style.display = 'none';
+    } else {
+      (hamburger as HTMLElement).style.display = 'none';
+      (desktopNav as HTMLElement).style.display = 'flex';
+      (mobileNav as HTMLElement).style.display = 'none';
+    }
+  }
+  checkWidth();
+  window.addEventListener('resize', checkWidth);
+
+  // Toggle mobile menu
+  let menuOpen = false;
+  hamburger?.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    (mobileNav as HTMLElement).style.display = menuOpen ? 'block' : 'none';
+    const lines = hamburger.querySelectorAll('.hline');
+    if (menuOpen) {
+      (lines[0] as HTMLElement).style.transform = 'rotate(45deg) translate(5px, 5px)';
+      (lines[1] as HTMLElement).style.opacity = '0';
+      (lines[2] as HTMLElement).style.transform = 'rotate(-45deg) translate(5px, -5px)';
+    } else {
+      lines.forEach(l => { (l as HTMLElement).style.transform = ''; (l as HTMLElement).style.opacity = '1'; });
+    }
+  });
+
+  // Close on link click
+  document.querySelectorAll('.mob-link').forEach(l => {
+    l.addEventListener('click', () => {
+      menuOpen = false;
+      (mobileNav as HTMLElement).style.display = 'none';
+      const lines = hamburger!.querySelectorAll('.hline');
+      lines.forEach(l => { (l as HTMLElement).style.transform = ''; (l as HTMLElement).style.opacity = '1'; });
+    });
+  });
+
+  // Shadow on scroll
+  window.addEventListener('scroll', () => {
+    (header as HTMLElement).style.boxShadow = window.scrollY > 30 ? '0 4px 24px rgba(0,0,0,.4)' : 'none';
+  });
+</script>

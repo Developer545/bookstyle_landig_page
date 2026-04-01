@@ -1,0 +1,551 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Agendar Cita — BookStyle" description="Reserva tu cita en BookStyle. Selecciona tu servicio, profesional favorito y el horario que prefieras. Rápido y sin complicaciones.">
+  <Header />
+
+  <!-- Hero -->
+  <section style="background:#222227;padding:140px 24px 60px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#9e8a78 0,#9e8a78 1px,transparent 0,transparent 50%);background-size:12px 12px;"></div>
+    <div style="position:relative;z-index:2;">
+      <span style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;display:block;margin-bottom:14px;">Reservas en Línea</span>
+      <h1 style="font-family:'Prata',serif;font-size:clamp(2.2rem,5vw,3.8rem);color:#fff;margin:0 0 16px;">Agenda tu <span style="color:#9e8a78;">Cita</span></h1>
+      <p style="font-size:15px;color:#999;max-width:480px;margin:0 auto;line-height:1.8;">Sigue los 4 pasos para reservar tu cita. Rápido, fácil y sin necesidad de llamar.</p>
+    </div>
+  </section>
+
+  <!-- Wizard container -->
+  <section style="background:#fcf9f5;min-height:600px;padding:60px 24px 100px;">
+    <div style="max-width:860px;margin:0 auto;">
+
+      <!-- Indicador de pasos -->
+      <div id="step-indicator" style="display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px;">
+        {[
+          { n: '01', l: 'Servicio' },
+          { n: '02', l: 'Profesional' },
+          { n: '03', l: 'Fecha & Hora' },
+          { n: '04', l: 'Tus Datos' },
+        ].map((s, i) => (
+          <>
+            <div class="step-dot" data-step={i} style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div class="step-circle" style="width:44px;height:44px;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#aaa;background:#fff;transition:all .3s;">
+                {s.n}
+              </div>
+              <span style="font-family:'Work Sans',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#aaa;">{s.l}</span>
+            </div>
+            {i < 3 && <div class="step-line" data-after={i} style="width:60px;height:1px;background:#ddd;margin-bottom:22px;flex-shrink:0;transition:background .3s;"></div>}
+          </>
+        ))}
+      </div>
+
+      <!-- ══════════ LOADING ══════════ -->
+      <div id="wiz-loading" style="text-align:center;padding:80px 24px;">
+        <div style="width:40px;height:40px;border:3px solid #eee;border-top-color:#9e8a78;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px;"></div>
+        <p style="font-family:'Work Sans',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#aaa;">Cargando servicios...</p>
+      </div>
+
+      <!-- ══════════ ERROR ══════════ -->
+      <div id="wiz-error" style="display:none;text-align:center;padding:60px 24px;background:#fff;">
+        <div style="font-size:3rem;margin-bottom:16px;">⚠️</div>
+        <h3 style="font-family:'Prata',serif;font-size:1.4rem;color:#282828;margin:0 0 12px;">No se pudo conectar</h3>
+        <p style="color:#777;margin:0 0 24px;" id="error-msg">Error al cargar el sistema de reservas.</p>
+        <button onclick="initWizard()" class="btn-gold" style="border:none;cursor:pointer;"><span>Reintentar</span></button>
+      </div>
+
+      <!-- ══════════ PASO 0: SERVICIOS ══════════ -->
+      <div id="step-0" style="display:none;">
+        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 8px;">¿Qué servicio deseas?</h2>
+        <p style="font-size:14px;color:#777;margin:0 0 32px;">Selecciona el servicio que deseas reservar.</p>
+        <div id="services-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px;background:#e8e3dc;"></div>
+        <div style="margin-top:32px;text-align:right;">
+          <button id="next-0" onclick="goTo(1)" disabled class="btn-gold" style="border:none;cursor:pointer;opacity:.4;"><span>Siguiente →</span></button>
+        </div>
+      </div>
+
+      <!-- ══════════ PASO 1: BARBERO ══════════ -->
+      <div id="step-1" style="display:none;">
+        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 8px;">¿Con quién deseas tu cita?</h2>
+        <p style="font-size:14px;color:#777;margin:0 0 32px;">Elige un profesional o deja que asignemos el disponible.</p>
+        <div id="barbers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;background:#e8e3dc;"></div>
+        <div style="margin-top:32px;display:flex;justify-content:space-between;">
+          <button onclick="goTo(0)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
+          <button id="next-1" onclick="goTo(2)" disabled class="btn-gold" style="border:none;cursor:pointer;opacity:.4;"><span>Siguiente →</span></button>
+        </div>
+      </div>
+
+      <!-- ══════════ PASO 2: FECHA & HORA ══════════ -->
+      <div id="step-2" style="display:none;">
+        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 8px;">Elige fecha y hora</h2>
+        <p style="font-size:14px;color:#777;margin:0 0 24px;">Selecciona el día y horario disponible.</p>
+
+        <!-- Selector de fechas horizontal -->
+        <div id="date-strip" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:32px;scrollbar-width:thin;"></div>
+
+        <!-- Slots -->
+        <div id="slots-wrap" style="display:none;">
+          <h4 style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;margin:0 0 16px;">Horarios disponibles</h4>
+          <div id="slots-loading" style="display:none;text-align:center;padding:24px;">
+            <div style="width:28px;height:28px;border:2px solid #eee;border-top-color:#9e8a78;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto;"></div>
+          </div>
+          <div id="slots-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;"></div>
+          <div id="closed-msg" style="display:none;text-align:center;padding:32px;color:#777;font-size:14px;"></div>
+        </div>
+
+        <div style="margin-top:32px;display:flex;justify-content:space-between;">
+          <button onclick="goTo(1)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
+          <button id="next-2" onclick="goTo(3)" disabled class="btn-gold" style="border:none;cursor:pointer;opacity:.4;"><span>Continuar →</span></button>
+        </div>
+      </div>
+
+      <!-- ══════════ PASO 3: DATOS ══════════ -->
+      <div id="step-3" style="display:none;">
+        <!-- Resumen de la cita -->
+        <div id="summary-box" style="background:#222227;padding:24px 28px;margin-bottom:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;"></div>
+
+        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 8px;">Tus datos</h2>
+        <p style="font-size:14px;color:#777;margin:0 0 28px;">Ingresa tus datos para confirmar la cita.</p>
+
+        <form id="booking-form" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-row">
+            <div>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Nombre completo *</label>
+              <input id="f-name" type="text" required placeholder="Tu nombre completo"
+                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+            </div>
+            <div>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Teléfono / WhatsApp *</label>
+              <input id="f-phone" type="tel" required placeholder="+503 0000-0000"
+                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+            </div>
+          </div>
+          <div>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Email <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
+            <input id="f-email" type="email" placeholder="tu@email.com"
+              style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+          </div>
+          <div>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Notas adicionales <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
+            <textarea id="f-notes" rows="3" placeholder="Instrucciones especiales, preferencias de corte, etc."
+              style="width:100%;border:2px solid #eee;background:#fff;padding:12px 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;resize:none;transition:border-color .3s;max-length:300;"
+              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'"></textarea>
+          </div>
+          <div id="form-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;padding:12px 16px;font-size:14px;color:#dc2626;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+            <button type="button" onclick="goTo(2)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
+            <button type="submit" id="submit-btn" class="btn-gold" style="border:none;cursor:pointer;min-width:180px;"><span id="submit-txt">Confirmar Cita</span></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ══════════ PASO 4: CONFIRMACIÓN ══════════ -->
+      <div id="step-4" style="display:none;text-align:center;padding:48px 24px;">
+        <div style="width:72px;height:72px;background:#9e8a78;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 style="font-family:'Prata',serif;font-size:2rem;color:#282828;margin:0 0 12px;">¡Cita Confirmada!</h2>
+        <p style="font-size:15px;color:#777;margin:0 0 36px;max-width:420px;margin-left:auto;margin-right:auto;" id="confirm-msg"></p>
+
+        <div id="confirm-box" style="background:#222227;padding:28px 32px;max-width:420px;margin:0 auto 36px;text-align:left;"></div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+          <a id="confirm-wa" href="#" target="_blank" rel="noopener noreferrer"
+            style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:0 24px;height:48px;text-decoration:none;">
+            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Compartir por WhatsApp
+          </a>
+          <button onclick="resetWizard()" class="btn-gold" style="border:none;cursor:pointer;"><span>Nueva Cita</span></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 540px) {
+    .form-row { grid-template-columns: 1fr !important; }
+  }
+  .slot-btn {
+    height: 40px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #e0dbd4;
+    background: #fff;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .slot-btn:hover:not(:disabled) { border-color: #9e8a78; color: #9e8a78; }
+  .slot-btn.selected { background: #9e8a78; color: #fff; border-color: #9e8a78; }
+  .slot-btn:disabled { opacity: .35; cursor: not-allowed; }
+</style>
+
+<script>
+  const API = 'https://speeddan-barberia.vercel.app/api/book/speeddan-demo';
+
+  interface Service { id: number; name: string; price: number; duration: number; category: string; description?: string; }
+  interface Barber  { id: number; name: string; avatarUrl?: string; specialties?: string[]; }
+  interface Slot    { time: string; available: boolean; }
+
+  const state = {
+    step: 0,
+    services: [] as Service[],
+    barbers:  [] as Barber[],
+    service:  null as Service | null,
+    barber:   null as Barber | null | 'any',   // null=unselected, 'any'=cualquiera, Barber=elegido
+    date:     '',
+    time:     '',
+    slots:    [] as Slot[],
+  };
+
+  /* ── DOM helpers ────────────────────────────────── */
+  const $  = (id: string) => document.getElementById(id)!;
+  const show = (id: string) => { ($(id) as HTMLElement).style.display = 'block'; };
+  const hide = (id: string) => { ($(id) as HTMLElement).style.display = 'none'; };
+
+  /* ── Step indicator ─────────────────────────────── */
+  function updateIndicator(step: number) {
+    document.querySelectorAll<HTMLElement>('.step-circle').forEach((el, i) => {
+      if (i < step) {
+        el.style.background = '#9e8a78';
+        el.style.borderColor = '#9e8a78';
+        el.style.color = '#fff';
+        el.innerHTML = '✓';
+      } else if (i === step) {
+        el.style.background = '#222227';
+        el.style.borderColor = '#222227';
+        el.style.color = '#fff';
+        el.innerHTML = ['01','02','03','04'][i];
+      } else {
+        el.style.background = '#fff';
+        el.style.borderColor = '#ddd';
+        el.style.color = '#aaa';
+        el.innerHTML = ['01','02','03','04'][i];
+      }
+    });
+    document.querySelectorAll<HTMLElement>('.step-line').forEach((el, i) => {
+      el.style.background = i < step ? '#9e8a78' : '#ddd';
+    });
+  }
+
+  /* ── Navigation ─────────────────────────────────── */
+  function goTo(step: number) {
+    for (let i = 0; i <= 4; i++) {
+      const el = $(`step-${i}`) as HTMLElement;
+      if (el) el.style.display = i === step ? 'block' : 'none';
+    }
+    state.step = step;
+    updateIndicator(step);
+    if (step === 3) renderSummary();
+  }
+  (window as any).goTo = goTo;
+
+  /* ── Init: fetch services + barbers ─────────────── */
+  async function initWizard() {
+    hide('wiz-error');
+    show('wiz-loading');
+    try {
+      const res = await fetch(API, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      const data = await res.json();
+      state.services = data.services ?? [];
+      state.barbers  = data.barbers  ?? [];
+      hide('wiz-loading');
+      renderServices();
+      goTo(0);
+    } catch (e: any) {
+      hide('wiz-loading');
+      ($('error-msg') as HTMLElement).textContent = e?.message ?? 'No se pudo cargar el sistema.';
+      show('wiz-error');
+    }
+  }
+  (window as any).initWizard = initWizard;
+
+  /* ── Paso 0: Servicios ──────────────────────────── */
+  function renderServices() {
+    const grid = $('services-grid');
+    grid.innerHTML = '';
+    state.services.forEach(s => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;padding:24px 20px;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;';
+      card.dataset.id = String(s.id);
+      card.innerHTML = `
+        <div style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:8px;">${s.category ?? 'Servicio'}</div>
+        <div style="font-family:'Prata',serif;font-size:1.05rem;color:#282828;margin-bottom:6px;">${s.name}</div>
+        ${s.description ? `<div style="font-size:13px;color:#777;line-height:1.6;margin-bottom:10px;">${s.description}</div>` : ''}
+        <div style="display:flex;gap:16px;margin-top:auto;">
+          <span style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#9e8a78;">$${Number(s.price).toFixed(2)}</span>
+          <span style="font-family:'Work Sans',sans-serif;font-size:12px;color:#aaa;">${s.duration} min</span>
+        </div>`;
+      card.addEventListener('click', () => {
+        state.service = s;
+        grid.querySelectorAll<HTMLElement>('[data-id]').forEach(c => {
+          c.style.borderBottomColor = 'transparent';
+          c.style.boxShadow = 'none';
+        });
+        card.style.borderBottomColor = '#9e8a78';
+        card.style.boxShadow = '0 8px 32px rgba(158,138,120,.2)';
+        const btn = $('next-0') as HTMLButtonElement;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ── Paso 1: Barberos ───────────────────────────── */
+  function renderBarbers() {
+    const grid = $('barbers-grid');
+    grid.innerHTML = '';
+
+    const makeCard = (label: string, sublabel: string, initial: string, value: Barber | null) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;padding:28px 20px;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;text-align:center;';
+      card.innerHTML = `
+        <div style="width:64px;height:64px;border-radius:50%;background:#222227;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <span style="font-family:'Prata',serif;font-size:1.6rem;color:#fff;">${initial}</span>
+        </div>
+        <div style="font-family:'Prata',serif;font-size:1rem;color:#282828;margin-bottom:4px;">${label}</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9e8a78;">${sublabel}</div>`;
+      card.addEventListener('click', () => {
+        state.barber = value ?? 'any';
+        grid.querySelectorAll<HTMLElement>('div[style]').forEach(c => {
+          if (c.parentElement === grid) { c.style.borderBottomColor = 'transparent'; c.style.boxShadow = 'none'; }
+        });
+        card.style.borderBottomColor = '#9e8a78';
+        card.style.boxShadow = '0 8px 32px rgba(158,138,120,.2)';
+        const btn = $('next-1') as HTMLButtonElement;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      });
+      grid.appendChild(card);
+    };
+
+    makeCard('Cualquier disponible', 'Asignación automática', '✦', null);
+    state.barbers.forEach(b => makeCard(b.name, b.specialties?.[0] ?? 'Profesional', b.name[0].toUpperCase(), b));
+  }
+
+  /* ── Paso 2: Fechas ─────────────────────────────── */
+  function renderDateStrip() {
+    const strip = $('date-strip');
+    strip.innerHTML = '';
+    const today = new Date();
+    const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+    for (let i = 0; i < 14; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm   = String(d.getMonth()+1).padStart(2,'0');
+      const dd   = String(d.getDate()).padStart(2,'0');
+      const key  = `${yyyy}-${mm}-${dd}`;
+
+      const btn = document.createElement('button');
+      btn.style.cssText = 'min-width:64px;padding:10px 8px;background:#fff;border:1px solid #e0dbd4;cursor:pointer;transition:all .2s;flex-shrink:0;text-align:center;';
+      btn.innerHTML = `
+        <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-bottom:4px;">${i===0?'HOY':days[d.getDay()]}</div>
+        <div style="font-family:'Prata',serif;font-size:1.3rem;color:#282828;line-height:1;">${d.getDate()}</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#9e8a78;margin-top:2px;">${months[d.getMonth()]}</div>`;
+      btn.addEventListener('click', async () => {
+        state.date = key;
+        state.time = '';
+        strip.querySelectorAll('button').forEach(b => {
+          b.style.background = '#fff';
+          b.style.borderColor = '#e0dbd4';
+        });
+        btn.style.background = '#222227';
+        btn.style.borderColor = '#222227';
+        btn.querySelectorAll('div').forEach(el => (el as HTMLElement).style.color = '#fff');
+        (btn.querySelectorAll('div')[2] as HTMLElement).style.color = '#9e8a78';
+        await fetchSlots(key);
+        const n2 = $('next-2') as HTMLButtonElement;
+        n2.disabled = true; n2.style.opacity = '.4';
+      });
+      strip.appendChild(btn);
+    }
+  }
+
+  async function fetchSlots(date: string) {
+    show('slots-wrap');
+    hide('slots-grid');
+    hide('closed-msg');
+    show('slots-loading');
+    try {
+      const params = new URLSearchParams({ date, serviceId: String(state.service!.id) });
+      if (state.barber && state.barber !== 'any') params.set('barberId', String((state.barber as Barber).id));
+      const res = await fetch(`${API}/slots?${params}`);
+      const data = await res.json();
+      hide('slots-loading');
+      if (!data.isOpen) {
+        ($('closed-msg') as HTMLElement).textContent = data.reason ?? 'No hay disponibilidad este día.';
+        show('closed-msg');
+        return;
+      }
+      renderSlots(data.slots);
+    } catch {
+      hide('slots-loading');
+      ($('closed-msg') as HTMLElement).textContent = 'No se pudieron cargar los horarios.';
+      show('closed-msg');
+    }
+  }
+
+  function renderSlots(slots: Slot[]) {
+    const grid = $('slots-grid');
+    grid.innerHTML = '';
+    grid.style.display = 'grid';
+    slots.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'slot-btn' + (s.available ? '' : '');
+      btn.disabled = !s.available;
+      btn.textContent = s.time;
+      if (s.available) {
+        btn.addEventListener('click', () => {
+          state.time = s.time;
+          grid.querySelectorAll<HTMLButtonElement>('.slot-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          const n2 = $('next-2') as HTMLButtonElement;
+          n2.disabled = false; n2.style.opacity = '1';
+        });
+      }
+      grid.appendChild(btn);
+    });
+    show('slots-grid');
+  }
+
+  /* ── Paso 3: Resumen ────────────────────────────── */
+  function renderSummary() {
+    const box = $('summary-box');
+    const barberName = state.barber === 'any' || !state.barber ? 'Cualquier disponible' : (state.barber as Barber).name;
+    const [y,m,d] = state.date.split('-');
+    const dateLabel = `${d}/${m}/${y}`;
+    box.innerHTML = [
+      { label: 'Servicio',  val: state.service!.name },
+      { label: 'Profesional', val: barberName },
+      { label: 'Fecha',     val: dateLabel },
+      { label: 'Hora',      val: state.time },
+      { label: 'Precio',    val: `$${Number(state.service!.price).toFixed(2)}` },
+    ].map(i => `
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:2px;">${i.label}</div>
+        <div style="font-family:'Prata',serif;font-size:1rem;color:#fff;">${i.val}</div>
+      </div>`).join('');
+  }
+
+  /* ── Paso 3: Submit ─────────────────────────────── */
+  $('booking-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name  = ($('f-name')  as HTMLInputElement).value.trim();
+    const phone = ($('f-phone') as HTMLInputElement).value.trim();
+    const email = ($('f-email') as HTMLInputElement).value.trim();
+    const notes = ($('f-notes') as HTMLTextAreaElement).value.trim();
+    const errBox = $('form-error');
+    errBox.style.display = 'none';
+
+    if (name.length < 2) { errBox.textContent = 'Por favor ingresa tu nombre completo.'; errBox.style.display = 'block'; return; }
+    if (!phone) { errBox.textContent = 'El teléfono es requerido.'; errBox.style.display = 'block'; return; }
+
+    const submitBtn = $('submit-btn') as HTMLButtonElement;
+    const submitTxt = $('submit-txt')!;
+    submitBtn.disabled = true;
+    submitTxt.textContent = 'Confirmando...';
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          serviceId: state.service!.id,
+          barberId:  state.barber === 'any' || !state.barber ? null : (state.barber as Barber).id,
+          date:      state.date,
+          time:      state.time,
+          clientName:  name,
+          clientPhone: phone,
+          clientEmail: email || undefined,
+          notes:       notes || undefined,
+        }),
+      });
+
+      if (res.status === 429) throw new Error('Has alcanzado el límite de reservas. Intenta mañana.');
+      if (res.status === 409) throw new Error('El horario ya no está disponible. Elige otro.');
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error ?? `Error ${res.status}`);
+      }
+
+      const data = await res.json();
+      showConfirmation(data, name);
+    } catch (err: any) {
+      errBox.textContent = err?.message ?? 'Ocurrió un error. Intenta nuevamente.';
+      errBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitTxt.textContent = 'Confirmar Cita';
+    }
+  });
+
+  function showConfirmation(data: any, clientName: string) {
+    const dt = new Date(data.startTime);
+    const dateStr = dt.toLocaleDateString('es-SV', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const timeStr = dt.toLocaleTimeString('es-SV', { hour:'2-digit', minute:'2-digit', hour12: true });
+
+    ($('confirm-msg') as HTMLElement).textContent = `¡${clientName}, tu cita ha sido confirmada! Te esperamos el ${dateStr} a las ${timeStr}.`;
+
+    $('confirm-box').innerHTML = [
+      { l: 'Servicio',    v: data.serviceName },
+      { l: 'Profesional', v: data.barberName },
+      { l: 'Fecha',       v: dateStr },
+      { l: 'Hora',        v: timeStr },
+    ].map(i => `
+      <div style="padding:10px 0;border-bottom:1px solid #333;">
+        <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;">${i.l}</div>
+        <div style="font-family:'Prata',serif;font-size:1rem;color:#fff;margin-top:2px;">${i.v}</div>
+      </div>`).join('');
+
+    const waMsg = encodeURIComponent(`¡Hola BookStyle! Confirmé mi cita:\n• Servicio: ${data.serviceName}\n• Profesional: ${data.barberName}\n• Fecha: ${dateStr} a las ${timeStr}`);
+    ($('confirm-wa') as HTMLAnchorElement).href = `https://wa.me/50300000000?text=${waMsg}`;
+
+    goTo(4);
+    $('step-indicator').style.opacity = '0.4';
+  }
+
+  function resetWizard() {
+    state.step = 0; state.service = null; state.barber = null;
+    state.date = ''; state.time = ''; state.slots = [];
+    ($('f-name') as HTMLInputElement).value = '';
+    ($('f-phone') as HTMLInputElement).value = '';
+    ($('f-email') as HTMLInputElement).value = '';
+    ($('f-notes') as HTMLTextAreaElement).value = '';
+    $('step-indicator').style.opacity = '1';
+    renderServices();
+    renderBarbers();
+    renderDateStrip();
+    ($('next-0') as HTMLButtonElement).disabled = true;
+    ($('next-0') as HTMLButtonElement).style.opacity = '.4';
+    ($('next-1') as HTMLButtonElement).disabled = true;
+    ($('next-1') as HTMLButtonElement).style.opacity = '.4';
+    ($('next-2') as HTMLButtonElement).disabled = true;
+    ($('next-2') as HTMLButtonElement).style.opacity = '.4';
+    goTo(0);
+  }
+  (window as any).resetWizard = resetWizard;
+
+  /* ── Observar cambio a step 1 y 2 para renderizar ─ */
+  const originalGoTo = goTo;
+  (window as any).goTo = (step: number) => {
+    if (step === 1 && state.barbers.length) renderBarbers();
+    if (step === 2) renderDateStrip();
+    originalGoTo(step);
+  };
+
+  /* ── Start ──────────────────────────────────────── */
+  initWizard();
+</script>

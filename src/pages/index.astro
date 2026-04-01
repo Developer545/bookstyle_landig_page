@@ -1,0 +1,393 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const servicios = [
+  {
+    img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Barbería',
+    nombre: 'Corte Caballero',
+    desc: 'Cortes clásicos y modernos. Degradados, fade, texturas y más a manos de nuestros barberos expertos.',
+    precio: 'Desde $8',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1621605815971-c4f26b36abb2?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Barbería',
+    nombre: 'Barba & Afeitado',
+    desc: 'Perfilado, arreglo y afeitado clásico con navaja. Técnicas artesanales para una barba impecable.',
+    precio: 'Desde $6',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Salón',
+    nombre: 'Coloración',
+    desc: 'Tintes, mechas, balayage y técnicas de coloración avanzadas para un look vibrante y personalizado.',
+    precio: 'Desde $25',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Salón',
+    nombre: 'Tratamientos Capilares',
+    desc: 'Hidratación profunda, keratina, botox capilar y nutrición intensiva para restaurar tu cabello.',
+    precio: 'Desde $20',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Salón',
+    nombre: 'Manicure & Pedicure',
+    desc: 'Cuidado completo de manos y pies. Esmaltado clásico, semipermanente, acrílico y diseños artísticos.',
+    precio: 'Desde $8',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&auto=format&fit=crop&q=80',
+    categoria: 'Salón',
+    nombre: 'Maquillaje',
+    desc: 'Maquillaje social y de noche para eventos especiales, bodas y quinceañeras. Look impecable garantizado.',
+    precio: 'Desde $25',
+  },
+];
+
+const equipo = [
+  { nombre: 'Carlos Mendez', cargo: 'Master Barber', inicial: 'C' },
+  { nombre: 'Ana Sofía López', cargo: 'Colorista Senior', inicial: 'A' },
+  { nombre: 'Roberto Díaz', cargo: 'Barber & Stylist', inicial: 'R' },
+  { nombre: 'María Fernanda', cargo: 'Nail Artist', inicial: 'M' },
+];
+---
+
+<Layout>
+  <Header />
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section id="inicio" style="position:relative;height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;">
+    <!-- Imagen de fondo -->
+    <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1600&auto=format&fit=crop&q=80');background-size:cover;background-position:center;transform:scale(1.05);transition:transform 8s ease;"></div>
+    <!-- Overlay -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(22,22,27,.92) 50%, rgba(22,22,27,.6));"></div>
+
+    <div style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 24px;padding-top:80px;">
+      <span class="section-label fade-up">Barbería & Salón de Belleza</span>
+      <h1 class="fade-up delay-1" style="font-family:'Prata',serif;font-size:clamp(2.8rem,6vw,5rem);color:#fff;line-height:1.1;margin:0 0 24px;max-width:680px;">
+        Donde el Arte<br>Toma <span style="color:#9e8a78;">Forma</span>
+      </h1>
+      <p class="fade-up delay-2" style="font-size:16px;color:#ddd;max-width:480px;line-height:1.8;margin:0 0 40px;">
+        Expertos en barbería clásica, coloración, tratamientos y estética. Tu imagen en las mejores manos, en un solo lugar.
+      </p>
+      <div class="fade-up delay-3" style="display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="/agendar" class="btn-gold" style="text-decoration:none;"><span>Agendar mi Cita</span></a>
+        <a href="#servicios" class="btn-outline" style="text-decoration:none;">Ver Servicios</a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.5;">
+      <span style="font-family:'Work Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#fff;">Scroll</span>
+      <div style="width:1px;height:36px;background:linear-gradient(to bottom,#fff,transparent);animation:pulse 2s infinite;"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ESTADÍSTICAS
+  ══════════════════════════════════════════ -->
+  <section style="background:#222227;padding:48px 24px;">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;text-align:center;">
+      {[
+        { n: '5+',     l: 'Años de Experiencia' },
+        { n: '2,500+', l: 'Clientes Satisfechos' },
+        { n: '10+',    l: 'Profesionales' },
+        { n: '6',      l: 'Servicios Especializados' },
+      ].map(stat => (
+        <div style="padding:24px 16px;border-right:1px solid #333;last-child:border-right:none;">
+          <div style="font-family:'Prata',serif;font-size:2.4rem;color:#9e8a78;margin-bottom:6px;">{stat.n}</div>
+          <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#999;">{stat.l}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       NOSOTROS
+  ══════════════════════════════════════════ -->
+  <section id="nosotros" style="padding:100px 24px;background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;" class="about-grid">
+      <!-- Imágenes -->
+      <div style="position:relative;padding-bottom:60px;">
+        <img
+          src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=640&auto=format&fit=crop&q=80"
+          alt="Barbero trabajando"
+          style="width:75%;aspect-ratio:3/4;object-fit:cover;box-shadow:0 16px 40px rgba(0,0,0,.18);"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=500&auto=format&fit=crop&q=80"
+          alt="Salón de belleza"
+          style="position:absolute;bottom:0;right:0;width:55%;aspect-ratio:4/3;object-fit:cover;box-shadow:0 16px 40px rgba(0,0,0,.22);border:6px solid #fff;"
+        />
+        <!-- Badge -->
+        <div style="position:absolute;top:24px;left:24px;background:#9e8a78;color:#fff;padding:12px 18px;text-align:center;">
+          <div style="font-family:'Prata',serif;font-size:1.8rem;">2019</div>
+          <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;">Desde</div>
+        </div>
+      </div>
+
+      <!-- Texto -->
+      <div>
+        <span class="section-label">Nuestra Historia</span>
+        <h2 class="section-title">Arte y dedicación en cada servicio</h2>
+        <div class="section-divider"></div>
+        <p style="font-size:15px;line-height:1.9;margin-bottom:18px;">
+          BookStyle nació con una visión clara: crear un espacio donde la barbería clásica y la estética moderna conviven bajo el mismo techo. Desde 2019 hemos transformado la imagen de miles de clientes.
+        </p>
+        <p style="font-size:15px;line-height:1.9;margin-bottom:36px;">
+          Nuestro equipo son artistas apasionados, capacitados en las últimas tendencias internacionales. Cada corte, cada color, cada tratamiento es ejecutado con precisión y cuidado.
+        </p>
+        <div style="display:flex;gap:32px;margin-bottom:40px;">
+          {[
+            { titulo: 'Barbería Clásica', desc: 'Técnicas tradicionales y modernas' },
+            { titulo: 'Salón de Belleza', desc: 'Coloración, tratamientos y más' },
+          ].map(item => (
+            <div>
+              <div style="width:32px;height:2px;background:#9e8a78;margin-bottom:12px;"></div>
+              <div style="font-family:'Prata',serif;font-size:15px;color:#282828;margin-bottom:4px;">{item.titulo}</div>
+              <div style="font-size:13px;color:#777;">{item.desc}</div>
+            </div>
+          ))}
+        </div>
+        <a href="/agendar" class="btn-gold" style="text-decoration:none;"><span>Agenda tu Cita</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MISIÓN & VISIÓN
+  ══════════════════════════════════════════ -->
+  <section id="mision" style="padding:100px 24px;background:#fcf9f5;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:60px;">
+        <span class="section-label">Nuestra Esencia</span>
+        <h2 class="section-title" style="margin:0 auto;">Misión & Visión</h2>
+        <div class="section-divider center"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;">
+        <!-- Misión -->
+        <div style="background:#fff;padding:48px 40px;box-shadow:0 8px 48px rgba(64,1,4,.07);position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#9e8a78;"></div>
+          <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;margin-bottom:16px;">01</div>
+          <h3 style="font-family:'Prata',serif;font-size:1.6rem;color:#282828;margin:0 0 20px;">Nuestra Misión</h3>
+          <p style="font-size:15px;line-height:1.9;margin:0;">
+            Brindar servicios de barbería y belleza de alta calidad que superen las expectativas de nuestros clientes. Nos comprometemos con la excelencia técnica, el buen trato y el uso de los mejores productos del mercado.
+          </p>
+        </div>
+        <!-- Visión -->
+        <div style="background:#222227;padding:48px 40px;box-shadow:0 8px 48px rgba(0,0,0,.18);position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#9e8a78;"></div>
+          <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;margin-bottom:16px;">02</div>
+          <h3 style="font-family:'Prata',serif;font-size:1.6rem;color:#fff;margin:0 0 20px;">Nuestra Visión</h3>
+          <p style="font-size:15px;line-height:1.9;margin:0;color:#999;">
+            Ser el centro de estética multi-servicio de referencia en El Salvador, reconocido por la excelencia, la formación continua y la innovación tecnológica al servicio de nuestros clientes.
+          </p>
+        </div>
+        <!-- Valores -->
+        <div style="background:#fff;padding:48px 40px;box-shadow:0 8px 48px rgba(64,1,4,.07);grid-column:1/-1;">
+          <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;margin-bottom:16px;">03</div>
+          <h3 style="font-family:'Prata',serif;font-size:1.6rem;color:#282828;margin:0 0 28px;">Nuestros Valores</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;">
+            {[
+              { v: 'Excelencia', d: 'Máxima calidad en cada detalle' },
+              { v: 'Confianza', d: 'Relación honesta con cada cliente' },
+              { v: 'Innovación', d: 'Técnicas y tendencias actuales' },
+              { v: 'Pasión', d: 'Amor genuino por nuestro arte' },
+            ].map(val => (
+              <div>
+                <div style="width:28px;height:2px;background:#9e8a78;margin-bottom:12px;"></div>
+                <div style="font-family:'Prata',serif;font-size:15px;color:#282828;margin-bottom:4px;">{val.v}</div>
+                <div style="font-size:13px;color:#777;">{val.d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SERVICIOS
+  ══════════════════════════════════════════ -->
+  <section id="servicios" style="padding:100px 24px;background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:60px;">
+        <span class="section-label">Lo que ofrecemos</span>
+        <h2 class="section-title" style="margin:0 auto;">Nuestros Servicios</h2>
+        <div class="section-divider center"></div>
+        <p style="max-width:560px;margin:0 auto;font-size:15px;line-height:1.9;">
+          Barbería clásica y salón de belleza en un solo espacio. Servicios profesionales para hombres y mujeres.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2px;background:#f0ebe3;">
+        {servicios.map(s => (
+          <div style="background:#fff;position:relative;overflow:hidden;group cursor-default;" class="service-card">
+            <!-- Imagen -->
+            <div style="height:240px;overflow:hidden;">
+              <img src={s.img} alt={s.nombre}
+                style="width:100%;height:100%;object-fit:cover;transition:transform .6s ease;"
+                class="service-img" />
+            </div>
+            <!-- Badge categoria -->
+            <span style={`position:absolute;top:16px;left:16px;background:${s.categoria==='Barbería'?'#222227':'#9e8a78'};color:#fff;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;`}>
+              {s.categoria}
+            </span>
+            <!-- Info -->
+            <div style="padding:28px 28px 32px;">
+              <h3 style="font-family:'Prata',serif;font-size:1.25rem;color:#282828;margin:0 0 10px;">{s.nombre}</h3>
+              <p style="font-size:14px;line-height:1.8;color:#777;margin:0 0 20px;">{s.desc}</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#9e8a78;letter-spacing:1px;">{s.precio}</span>
+                <a href="/agendar" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;text-decoration:none;border-bottom:1px solid #282828;padding-bottom:1px;transition:color .3s,border-color .3s;"
+                  onmouseover="this.style.color='#9e8a78';this.style.borderColor='#9e8a78'"
+                  onmouseout="this.style.color='#282828';this.style.borderColor='#282828'">
+                  Reservar →
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style="text-align:center;margin-top:56px;">
+        <a href="/agendar" class="btn-gold" style="text-decoration:none;"><span>Ver Disponibilidad</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       RESERVA RÁPIDA (banner)
+  ══════════════════════════════════════════ -->
+  <section style="background:#222227;padding:80px 24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#9e8a78 0,#9e8a78 1px,transparent 0,transparent 50%);background-size:12px 12px;"></div>
+    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
+      <span class="section-label" style="justify-content:center;display:block;">Reservas en Línea 24/7</span>
+      <h2 style="font-family:'Prata',serif;font-size:clamp(2rem,4vw,3rem);color:#fff;margin:0 0 20px;">¿Listo para tu nuevo look?</h2>
+      <p style="font-size:15px;color:#999;line-height:1.9;margin:0 0 40px;">
+        Elige tu servicio, selecciona a tu profesional favorito y escoge el horario que más te convenga. Rápido, fácil y sin complicaciones.
+      </p>
+      <a href="/agendar" class="btn-gold" style="text-decoration:none;font-size:12px;height:52px;line-height:52px;padding:0 40px;"><span>Agendar mi Cita</span></a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       EQUIPO
+  ══════════════════════════════════════════ -->
+  <section id="equipo" style="padding:100px 24px;background:#fcf9f5;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:60px;">
+        <span class="section-label">Los Profesionales</span>
+        <h2 class="section-title" style="margin:0 auto;">Nuestro Equipo</h2>
+        <div class="section-divider center"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;background:#f0ebe3;">
+        {equipo.map((m, i) => (
+          <div style="background:#fff;text-align:center;padding:40px 24px 36px;position:relative;overflow:hidden;">
+            <!-- Avatar -->
+            <div style={`width:90px;height:90px;border-radius:50%;background:${i%2===0?'#222227':'#9e8a78'};display:flex;align-items:center;justify-content:center;margin:0 auto 20px;`}>
+              <span style="font-family:'Prata',serif;font-size:2rem;color:#fff;">{m.inicial}</span>
+            </div>
+            <h3 style="font-family:'Prata',serif;font-size:1.15rem;color:#282828;margin:0 0 6px;">{m.nombre}</h3>
+            <span style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;">{m.cargo}</span>
+            <div style="width:32px;height:1px;background:#eee;margin:18px auto 0;"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════════════ -->
+  <section id="contacto" style="padding:100px 24px;background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;" class="contact-grid">
+      <!-- Info -->
+      <div>
+        <span class="section-label">Contáctanos</span>
+        <h2 class="section-title">Estamos para servirte</h2>
+        <div class="section-divider"></div>
+        <p style="font-size:15px;line-height:1.9;margin-bottom:36px;">
+          ¿Tienes preguntas sobre nuestros servicios? ¿Quieres conocer más sobre nuestro equipo? Escríbenos o visítanos directamente.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-bottom:36px;">
+          {[
+            { icon: '📍', label: 'Dirección', val: 'San Salvador, El Salvador' },
+            { icon: '📞', label: 'Teléfono', val: '+503 0000-0000', href: 'https://wa.me/50300000000' },
+            { icon: '✉️', label: 'Email', val: 'info@bookstyle.com', href: 'mailto:info@bookstyle.com' },
+            { icon: '🕐', label: 'Horario', val: 'Lun–Vie 8AM–7PM · Sáb 8AM–6PM' },
+          ].map(c => (
+            <div style="display:flex;gap:16px;align-items:flex-start;">
+              <div style="width:44px;height:44px;background:#222227;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:18px;">{c.icon}</span>
+              </div>
+              <div>
+                <div style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:2px;">{c.label}</div>
+                {c.href ? (
+                  <a href={c.href} style="font-size:15px;color:#282828;text-decoration:none;">{c.val}</a>
+                ) : (
+                  <span style="font-size:15px;color:#282828;">{c.val}</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div style="background:#fcf9f5;padding:48px 40px;">
+        <h3 style="font-family:'Prata',serif;font-size:1.5rem;color:#282828;margin:0 0 28px;">Envíanos un mensaje</h3>
+        <form action="" method="POST" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Nombre *</label>
+              <input type="text" name="nombre" required placeholder="Tu nombre"
+                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+            </div>
+            <div>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Email *</label>
+              <input type="email" name="email" required placeholder="tu@email.com"
+                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+            </div>
+          </div>
+          <div>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Teléfono</label>
+            <input type="tel" name="telefono" placeholder="+503 0000-0000"
+              style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;"
+              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+          </div>
+          <div>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Mensaje *</label>
+            <textarea name="mensaje" required rows="4" placeholder="¿En qué podemos ayudarte?"
+              style="width:100%;border:2px solid #eee;background:#fff;padding:14px 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;resize:none;transition:border-color .3s;"
+              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'"></textarea>
+          </div>
+          <button type="submit" class="btn-gold" style="width:100%;cursor:pointer;border:none;">
+            <span>Enviar Mensaje</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  @media (max-width: 768px) {
+    .about-grid, .contact-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  .service-card:hover .service-img {
+    transform: scale(1.06);
+  }
+</style>
