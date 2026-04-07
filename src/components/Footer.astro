@@ -12,7 +12,7 @@
           </span>
         </a>
         <p style="font-size:14px;line-height:26px;margin:0 0 24px;max-width:240px;">
-          Tu espacio multi-servicio para barbería y salón de belleza. Expertos comprometidos con tu imagen.
+          El ERP diseñado para barberías y salones. Agenda, caja, inventario y más en un solo sistema.
         </p>
         <div style="display:flex;gap:10px;">
           {['facebook','instagram','whatsapp'].map(sn => (
@@ -37,34 +37,33 @@
         </div>
       </div>
 
-      <!-- Columna 2: Servicios -->
+      <!-- Columna 2: Producto -->
       <div>
-        <h4 style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin:0 0 24px;">Servicios</h4>
+        <h4 style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin:0 0 24px;">Producto</h4>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-          {['Corte Caballero','Barba & Afeitado','Coloración','Tratamientos Capilares','Manicure & Pedicure','Maquillaje'].map(s => (
+          {[
+            { label: 'Módulos del ERP', href: '/#features' },
+            { label: 'Demo de Booking', href: '/agendar' },
+            { label: 'Precios', href: '/#precios' },
+            { label: 'Testimoniales', href: '/#testimoniales' },
+            { label: 'Contacto', href: '/#contacto' },
+          ].map(s => (
             <li>
-              <a href="/agendar" style="font-size:14px;color:#999;text-decoration:none;transition:color .3s;"
+              <a href={s.href} style="font-size:14px;color:#999;text-decoration:none;transition:color .3s;"
                 onmouseover="this.style.color='#9e8a78'" onmouseout="this.style.color='#999'">
-                {s}
+                {s.label}
               </a>
             </li>
           ))}
         </ul>
       </div>
 
-      <!-- Columna 3: Horario -->
+      <!-- Columna 3: Módulos -->
       <div>
-        <h4 style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin:0 0 24px;">Horario</h4>
+        <h4 style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin:0 0 24px;">Módulos</h4>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-          {[
-            { d: 'Lunes – Viernes', h: '8:00 AM – 7:00 PM' },
-            { d: 'Sábado', h: '8:00 AM – 6:00 PM' },
-            { d: 'Domingo', h: 'Cerrado' },
-          ].map(item => (
-            <li style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:10px;border-bottom:1px solid #333;">
-              <span>{item.d}</span>
-              <span style={item.h === 'Cerrado' ? 'color:#9e8a78' : 'color:#ddd'}>{item.h}</span>
-            </li>
+          {['Agenda Online','Control de Caja','Inventario','Gestión de Clientes','Reportes & Analytics','Gestión de Equipo'].map(m => (
+            <li style="font-size:13px;color:#999;">{m}</li>
           ))}
         </ul>
       </div>
@@ -90,8 +89,8 @@
             </a>
           </li>
         </ul>
-        <a href="/agendar" class="btn-gold" style="display:inline-block;margin-top:28px;text-decoration:none;">
-          <span>Reservar Ahora</span>
+        <a href="/#contacto" class="btn-gold" style="display:inline-block;margin-top:28px;text-decoration:none;">
+          <span>Solicitar Demo</span>
         </a>
       </div>
     </div>

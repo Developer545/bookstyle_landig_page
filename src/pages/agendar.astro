@@ -15,7 +15,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     <div style="position:relative;z-index:2;">
       <span style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;display:block;margin-bottom:14px;">Reservas en Línea 24/7</span>
       <h1 style="font-family:'Prata',serif;font-size:clamp(2.2rem,5vw,3.8rem);color:#fff;margin:0 0 16px;">Agenda tu <span style="color:#9e8a78;">Cita</span></h1>
-      <p style="font-size:15px;color:#999;max-width:480px;margin:0 auto;line-height:1.8;">Elige el negocio que quieres visitar, selecciona tus servicios y el horario que más te convenga.</p>
+      <p style="font-size:15px;color:#999;max-width:480px;margin:0 auto;line-height:1.8;">Selecciona el negocio, elige el tipo de servicio y la fecha que prefieras. En minutos.</p>
     </div>
   </section>
 
@@ -28,9 +28,8 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
         {[
           { n:'00', l:'Negocio' },
           { n:'01', l:'Servicio' },
-          { n:'02', l:'Profesional' },
-          { n:'03', l:'Fecha & Hora' },
-          { n:'04', l:'Tus Datos' },
+          { n:'02', l:'Fecha & Hora' },
+          { n:'03', l:'Tus Datos' },
         ].map((s, i) => (
           <>
             <div class="step-dot" style="display:flex;flex-direction:column;align-items:center;gap:6px;">
@@ -39,7 +38,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
               </div>
               <span style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#aaa;">{s.l}</span>
             </div>
-            {i < 4 && <div class="step-line" style="width:40px;height:1px;background:#ddd;margin-bottom:22px;flex-shrink:0;transition:background .3s;"></div>}
+            {i < 3 && <div class="step-line" style="width:40px;height:1px;background:#ddd;margin-bottom:22px;flex-shrink:0;transition:background .3s;"></div>}
           </>
         ))}
       </div>
@@ -85,8 +84,8 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
       <!-- ══ PASO 1: SERVICIO ══ -->
       <div id="step-1" style="display:none;">
         <div id="tenant-banner" style="background:#222227;padding:14px 20px;margin-bottom:28px;display:flex;align-items:center;gap:14px;"></div>
-        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 4px;">¿Qué servicios deseas?</h2>
-        <p style="font-size:14px;color:#777;margin:0 0 20px;">Puedes elegir uno o más servicios.</p>
+        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 4px;">¿Qué tipo de servicio deseas?</h2>
+        <p style="font-size:14px;color:#777;margin:0 0 20px;">Elige una o más opciones. Los precios se definen según lo que se realice en el salón.</p>
 
         <!-- Buscador + filtro categoría -->
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:center;">
@@ -113,12 +112,12 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
           </div>
           <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
             <div style="text-align:right;">
-              <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;">Total</div>
+              <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;">Duración est.</div>
               <div id="svc-bar-price" style="font-family:'Prata',serif;font-size:1.1rem;color:#fff;"></div>
             </div>
             <div style="display:flex;gap:12px;">
               <button onclick="goTo(0)" style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;background:none;border:1px solid #9e8a78;cursor:pointer;padding:10px 16px;">← Atrás</button>
-              <button id="next-1" onclick="goTo(2)" class="btn-gold" style="border:none;cursor:pointer;"><span>Siguiente →</span></button>
+              <button id="next-1" onclick="goTo(3)" class="btn-gold" style="border:none;cursor:pointer;"><span>Siguiente →</span></button>
             </div>
           </div>
         </div>
@@ -126,31 +125,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
         <!-- Nav cuando no hay selección -->
         <div id="svc-nav-empty" style="margin-top:0;display:flex;justify-content:space-between;padding-top:16px;">
           <button onclick="goTo(0)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
-          <span style="font-family:'Work Sans',sans-serif;font-size:12px;color:#aaa;align-self:center;">Selecciona al menos un servicio</span>
-        </div>
-      </div>
-
-      <!-- ══ PASO 2: PROFESIONAL ══ -->
-      <div id="step-2" style="display:none;">
-        <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:#282828;margin:0 0 8px;">¿Con quién deseas tu cita?</h2>
-        <p style="font-size:14px;color:#777;margin:0 0 28px;">Elige un profesional o deja que asignemos el disponible.</p>
-        <div id="barbers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;background:transparent;margin-bottom:80px;"></div>
-
-        <!-- Barra sticky barbero -->
-        <div id="barbers-bar" style="display:none;position:sticky;bottom:0;background:#222227;padding:16px 24px;z-index:50;box-shadow:0 -4px 24px rgba(0,0,0,.18);align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-          <div>
-            <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:2px;">Profesional</div>
-            <div id="brb-bar-name" style="font-family:'Prata',serif;font-size:.95rem;color:#fff;"></div>
-          </div>
-          <div style="display:flex;gap:12px;flex-shrink:0;">
-            <button onclick="goTo(1)" style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;background:none;border:1px solid #9e8a78;cursor:pointer;padding:10px 16px;">← Atrás</button>
-            <button id="next-2" onclick="goTo(3)" class="btn-gold" style="border:none;cursor:pointer;"><span>Siguiente →</span></button>
-          </div>
-        </div>
-
-        <div id="brb-nav-empty" style="margin-top:0;display:flex;justify-content:space-between;padding-top:16px;">
-          <button onclick="goTo(1)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
-          <span style="font-family:'Work Sans',sans-serif;font-size:12px;color:#aaa;align-self:center;">Selecciona un profesional</span>
+          <span style="font-family:'Work Sans',sans-serif;font-size:12px;color:#aaa;align-self:center;">Selecciona al menos un servicio para continuar</span>
         </div>
       </div>
 
@@ -181,7 +156,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
           <div id="closed-msg" style="display:none;text-align:center;padding:32px;color:#777;font-size:14px;"></div>
         </div>
         <div style="margin-top:32px;display:flex;justify-content:space-between;">
-          <button onclick="goTo(2)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
+          <button onclick="goTo(1)" style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#777;background:none;border:none;cursor:pointer;padding:0;">← Anterior</button>
           <button id="next-3" onclick="goTo(4)" disabled class="btn-gold" style="border:none;cursor:pointer;opacity:.4;"><span>Continuar →</span></button>
         </div>
       </div>
@@ -213,8 +188,8 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
               onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
           </div>
           <div>
-            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Notas <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
-            <textarea id="f-notes" rows="3" placeholder="Instrucciones especiales, preferencias..."
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">¿Qué te gustaría hacerte? <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
+            <textarea id="f-notes" rows="3" placeholder="Describe tu estilo, el tratamiento que buscas, o cualquier preferencia especial..."
               style="width:100%;border:2px solid #eee;background:#fff;padding:12px 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;resize:none;transition:border-color .3s;box-sizing:border-box;"
               onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'"></textarea>
           </div>
@@ -319,8 +294,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
   .svc-card.selected .svc-name { color:#fff; }
   .svc-card .svc-desc { font-size:13px;color:#777;line-height:1.6;margin-bottom:10px;transition:color .2s; }
   .svc-card.selected .svc-desc { color:#aaa; }
-  .svc-card .svc-price { font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#9e8a78; }
-  .svc-card .svc-dur   { font-family:'Work Sans',sans-serif;font-size:12px;color:#aaa;transition:color .2s; }
+  .svc-card .svc-dur   { font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;color:#9e8a78;transition:color .2s; }
   .svc-card.selected .svc-dur { color:#888; }
   .svc-card .check-mark {
     position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;
@@ -328,16 +302,6 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
   }
   .svc-card.selected .check-mark { display:flex; }
 
-  /* ── Tarjeta barbero ── */
-  .brb-card {
-    background:#fff;padding:28px 16px;cursor:pointer;transition:all .2s;
-    text-align:center;position:relative;
-  }
-  .brb-card:hover:not(.selected) { background:#faf7f3; }
-  .brb-card.selected { background:#222227;box-shadow:inset 0 -4px 0 #9e8a78; }
-  .brb-card .brb-name { font-family:'Prata',serif;font-size:1rem;color:#282828;margin-bottom:4px;transition:color .2s; }
-  .brb-card.selected .brb-name { color:#fff; }
-  .brb-card .brb-role { font-family:'Work Sans',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9e8a78; }
 </style>
 
 <script define:vars={{ API_BASE }}>
@@ -362,16 +326,20 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
 
   /* ── Step indicator ─────────────────────────────────── */
   function updateIndicator(step) {
-    const labels = ['00','01','02','03','04'];
+    // Mapa: paso lógico (0-5) → índice en el indicador de 4 puntos
+    // Pasos 0,1 → índices 0,1; paso 3 (fecha) → índice 2; paso 4 (datos) → índice 3; paso 5 (confirm) → 3
+    const stepToIdx = { 0:0, 1:1, 3:2, 4:3, 5:3 };
+    const idx = stepToIdx[step] ?? 0;
+    const labels = ['00','01','02','03'];
     document.querySelectorAll('.step-circle').forEach((el, i) => {
       const badge = el.querySelector('.step-badge');
-      if (i < step)      { el.style.background='#9e8a78';el.style.borderColor='#9e8a78';el.style.color='#fff'; el.childNodes[0].textContent='✓'; }
-      else if (i===step) { el.style.background='#222227';el.style.borderColor='#222227';el.style.color='#fff'; el.childNodes[0].textContent=labels[i]; }
-      else               { el.style.background='#fff';el.style.borderColor='#ddd';el.style.color='#aaa'; el.childNodes[0].textContent=labels[i]; }
+      if (i < idx)      { el.style.background='#9e8a78';el.style.borderColor='#9e8a78';el.style.color='#fff'; el.childNodes[0].textContent='✓'; }
+      else if (i===idx) { el.style.background='#222227';el.style.borderColor='#222227';el.style.color='#fff'; el.childNodes[0].textContent=labels[i]; }
+      else              { el.style.background='#fff';el.style.borderColor='#ddd';el.style.color='#aaa'; el.childNodes[0].textContent=labels[i]; }
       // Badge de servicios en paso 01
       if (i === 1 && badge) {
         const count = state.servicesSelected.length;
-        if (count > 0 && step > 1) {
+        if (count > 0 && idx > 1) {
           badge.textContent = count;
           badge.style.display = 'flex';
         } else {
@@ -380,7 +348,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
       }
     });
     document.querySelectorAll('.step-line').forEach((el, i) => {
-      el.style.background = i < step ? '#9e8a78' : '#ddd';
+      el.style.background = i < idx ? '#9e8a78' : '#ddd';
     });
   }
 
@@ -394,7 +362,6 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     state.step = step;
     updateIndicator(step);
     if (step === 1) renderServices();
-    if (step === 2) renderBarbers();
     if (step === 3) renderDateStrip();
     if (step === 4) renderSummary();
   }
@@ -582,8 +549,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
         <div class="svc-name">${s.name}</div>
         ${s.description ? `<div class="svc-desc">${s.description}</div>` : ''}
         <div style="display:flex;gap:16px;margin-top:4px;">
-          <span class="svc-price">$${Number(s.price).toFixed(2)}</span>
-          <span class="svc-dur">${s.duration} min</span>
+          <span class="svc-dur">~${s.duration} min</span>
         </div>`;
       card.addEventListener('click', () => toggleService(s, card));
       grid.appendChild(card);
@@ -610,9 +576,9 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     if (count > 0) {
       bar.style.display = 'flex';
       hide('svc-nav-empty');
-      const total = state.servicesSelected.reduce((s, x) => s + Number(x.price), 0);
+      const totalDur = state.servicesSelected.reduce((s, x) => s + (x.duration ?? 30), 0);
       $('svc-bar-names').textContent = state.servicesSelected.map(x => x.name).join(' · ');
-      $('svc-bar-price').textContent = `$${total.toFixed(2)}`;
+      $('svc-bar-price').textContent = `~${totalDur} min`;
     } else {
       bar.style.display = 'none';
       show('svc-nav-empty');
@@ -623,38 +589,6 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     renderServiceCards();
   }
   window.filterServices = filterServices;
-
-  /* ── Paso 2: Barberos ───────────────────────────────── */
-  function renderBarbers() {
-    const grid = $('barbers-grid');
-    grid.innerHTML = '';
-    state.barber = null;
-    hide('barbers-bar');
-    show('brb-nav-empty');
-
-    const makeCard = (label, sublabel, initial, value) => {
-      const card = document.createElement('div');
-      card.className = 'brb-card';
-      card.innerHTML = `
-        <div style="width:64px;height:64px;border-radius:50%;background:#9e8a78;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-          <span style="font-family:'Prata',serif;font-size:${initial.length > 1 ? '1.2rem' : '1.6rem'};color:#fff;">${initial}</span>
-        </div>
-        <div class="brb-name">${label}</div>
-        <div class="brb-role">${sublabel}</div>`;
-      card.addEventListener('click', () => {
-        state.barber = value ?? 'any';
-        grid.querySelectorAll('.brb-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        $('brb-bar-name').textContent = label;
-        show('barbers-bar', true);
-        hide('brb-nav-empty');
-      });
-      grid.appendChild(card);
-    };
-
-    makeCard('Cualquier disponible', 'Asignación automática', '✦', null);
-    state.barbers.forEach(b => makeCard(b.name, b.specialties?.[0] ?? 'Profesional', b.name[0].toUpperCase(), b));
-  }
 
   /* ── Paso 3: Fechas ─────────────────────────────────── */
   function renderDateStrip() {
@@ -710,10 +644,12 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     show('slots-loading');
     const slug = state.tenant.slug;
     const primaryService  = state.servicesSelected[0];
-    const totalDuration   = state.servicesSelected.reduce((sum, s) => sum + (s.duration ?? 30), 0);
+    const totalDuration   = state.servicesSelected.length > 0
+      ? state.servicesSelected.reduce((sum, s) => sum + (s.duration ?? 30), 0)
+      : 60;
     try {
-      const params = new URLSearchParams({ date, serviceId: String(primaryService.id), totalDuration: String(totalDuration) });
-      if (state.barber && state.barber !== 'any') params.set('barberId', String(state.barber.id));
+      const params = new URLSearchParams({ date, totalDuration: String(totalDuration) });
+      if (primaryService) params.set('serviceId', String(primaryService.id));
       const res = await fetch(`${API_BASE}/${slug}/slots?${params}`);
       const data = await res.json();
       hide('slots-loading');
@@ -773,18 +709,19 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
 
   /* ── Paso 4: Resumen ─────────────────────────────────── */
   function renderSummary() {
-    const barberName = !state.barber || state.barber === 'any' ? 'Cualquier disponible' : state.barber.name;
     const [y,m,d] = state.date.split('-');
-    const svcNames = state.servicesSelected.map(s => s.name).join(', ');
-    const total    = state.servicesSelected.reduce((a, s) => a + Number(s.price), 0);
-    $('summary-box').innerHTML = [
-      { l:'Negocio',      v: state.tenant.name },
-      { l:'Servicios',    v: svcNames },
-      { l:'Profesional',  v: barberName },
-      { l:'Fecha',        v: `${d}/${m}/${y}` },
-      { l:'Hora',         v: state.time },
-      { l:'Total',        v: `$${total.toFixed(2)}` },
-    ].map(i => `
+    const svcNames  = state.servicesSelected.length > 0
+      ? state.servicesSelected.map(s => s.name).join(', ')
+      : 'A definir en el salón';
+    const totalDur  = state.servicesSelected.reduce((a, s) => a + (s.duration ?? 30), 0);
+    const rows = [
+      { l:'Negocio',   v: state.tenant.name },
+      { l:'Servicios', v: svcNames },
+      { l:'Fecha',     v: `${d}/${m}/${y}` },
+      { l:'Hora',      v: state.time },
+    ];
+    if (state.servicesSelected.length > 0) rows.push({ l:'Duración estimada', v: `~${totalDur} min` });
+    $('summary-box').innerHTML = rows.map(i => `
       <div>
         <div style="font-family:'Work Sans',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:2px;">${i.l}</div>
         <div style="font-family:'Prata',serif;font-size:.95rem;color:#fff;">${i.v}</div>
@@ -815,9 +752,9 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          serviceId:    primaryService.id,
-          serviceIds:   state.servicesSelected.map(s => s.id),
-          barberId:     (!state.barber || state.barber === 'any') ? null : state.barber.id,
+          ...(primaryService && { serviceId: primaryService.id }),
+          ...(state.servicesSelected.length > 0 && { serviceIds: state.servicesSelected.map(s => s.id) }),
+          barberId:     null,
           date:         state.date,
           time:         state.time,
           clientName:   name,
