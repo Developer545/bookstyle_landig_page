@@ -640,7 +640,7 @@ import Footer from '../components/Footer.astro';
      DOMContentLoaded se dispara DESPUÉS de los scripts sincrónicos CDN.
      effect: 'fade' = crossfade suave entre slides fullscreen (estilo Web_Agricultura).
   */
-  document.addEventListener('DOMContentLoaded', function () {
+  function initHeroSwiper() {
     if (window.Swiper) {
       new window.Swiper('.hero-swiper', {
         loop: true,
@@ -661,8 +661,11 @@ import Footer from '../components/Footer.astro';
           dynamicBullets: true,
         },
       });
+    } else {
+      setTimeout(initHeroSwiper, 50);
     }
-  });
+  }
+  document.addEventListener('DOMContentLoaded', initHeroSwiper);
 
 </script>
 

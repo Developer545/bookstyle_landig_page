@@ -42,10 +42,10 @@ const canonical = Astro.url.href;
     </svg>
   </a>
 
-  <!-- Swiper JS — cargado al final del body (sincrónico, disponible en DOMContentLoaded) -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Swiper JS — is:inline evita que Astro/Vite lo convierta en módulo diferido -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <!-- AOS JS -->
-  <script src="https://unpkg.com/aos@3/dist/aos.js"></script>
+  <script is:inline src="https://unpkg.com/aos@3/dist/aos.js"></script>
   <!-- AOS init — is:inline garantiza que corre DESPUÉS de los CDN de arriba y de forma sincrónica -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
