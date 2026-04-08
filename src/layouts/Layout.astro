@@ -60,48 +60,55 @@ const canonical = Astro.url.href;
 <style is:global>
   /* ══════════════════════════════════════════════════
      PALETA BOOKSTYLE — CSS Custom Properties
-     Cambia estos valores para rethemear el sitio completo
+     Para cambiar la paleta completa edita solo esta sección
   ══════════════════════════════════════════════════ */
   :root {
-    /* Acento principal */
-    --gold:           #9e8a78;
-    --gold-dark:      #7d6b5e;
-    --gold-light:     #bfad9f;
-    --gold-rgb:       158, 138, 120;   /* para uso en rgba() */
+    /* ── ACENTO PRINCIPAL ────────────────────────────
+       Cambia --gold y --gold-rgb para rethemear el color
+       de botones, íconos, labels y divisores.          */
+    --gold:           #e85d7a;         /* coral / rosa vibrante */
+    --gold-dark:      #c44666;         /* coral oscuro (hover) */
+    --gold-light:     #f49db0;         /* coral claro */
+    --gold-rgb:       232, 93, 122;    /* para uso en rgba() */
 
-    /* Negros y oscuros */
-    --black:          #0a0a0a;         /* header, footer, galería, hero overlay */
+    /* ── NEGROS Y OSCUROS ────────────────────────────
+       Mantener negro puro para look premium.           */
+    --black:          #0a0a0a;         /* header, footer, galería */
     --black-deep:     #0d0d0f;         /* fondo sección precios */
     --black-soft:     #1a1a1f;         /* card básico (precios) */
-    --black-rich:     #111111;         /* card enterprise, texto premium */
+    --black-rich:     #111111;         /* card enterprise */
     --black-rgb:      10, 10, 10;      /* para uso en rgba() */
 
-    /* Cremas y claros */
-    --cream:          #fcf9f5;         /* fondo secciones claras */
-    --cream-dark:     #f0ebe3;         /* variante oscura de cream */
-    --cream-border:   #e0dbd4;         /* separadores en grids claros */
+    /* ── FONDOS CLAROS ───────────────────────────────
+       Tonos neutros fríos para contrastar con el coral. */
+    --cream:          #f5f8fc;         /* fondo secciones claras (azul-blanco) */
+    --cream-dark:     #e8eef6;         /* variante más oscura */
+    --cream-border:   #d8e3ef;         /* separadores en grids claros */
 
-    /* Texto */
-    --text-dark:      #111111;         /* títulos y texto principal */
-    --text-muted:     #777777;         /* texto secundario */
-    --text-light:     #999999;         /* texto sutil (footer, sublabels) */
-    --text-hero:      #dddddd;         /* texto sobre fondos muy oscuros */
-    --text-dark-alt:  #555555;         /* citas / testimoniales */
+    /* ── TEXTO ───────────────────────────────────────*/
+    --text-dark:      #111111;         /* títulos */
+    --text-muted:     #666666;         /* texto secundario */
+    --text-light:     #999999;         /* texto sutil */
+    --text-hero:      #e0e0e0;         /* texto sobre fondo negro */
+    --text-dark-alt:  #444444;         /* citas / testimoniales */
 
-    /* Bordes */
-    --border-light:   #eeeeee;         /* inputs y cards claras */
-    --border-dark:    #333333;         /* separadores en secciones oscuras */
-    --border-mid:     #1f1f1f;         /* borde menú móvil */
+    /* ── BORDES ─────────────────────────────────────*/
+    --border-light:   #e8edf3;         /* inputs y cards claras */
+    --border-dark:    #2a2a2a;         /* separadores en secciones oscuras */
+    --border-mid:     #1a1a1a;         /* borde menú móvil */
 
-    /* Fondos de UI */
+    /* ── UI ─────────────────────────────────────────*/
     --white:          #ffffff;
-    --form-bg:        #fcf9f5;         /* fondo del formulario */
+    --form-bg:        #f5f8fc;
   }
 
   html { scroll-behavior: smooth; }
   *, *::before, *::after { box-sizing: border-box; }
 
-  /* ── SVG icon override: todos los iconos gold siguen --gold automáticamente ── */
+  /* ── SVG icon override: todos los iconos siguen --gold automáticamente ──
+     El selector encuentra los SVGs por su valor original (#9e8a78),
+     pero la propiedad CSS var(--gold) gana al atributo en el render.
+     Cuando cambias --gold arriba, todos los íconos se actualizan.    */
   svg path[stroke="#9e8a78"],
   svg line[stroke="#9e8a78"],
   svg rect[stroke="#9e8a78"],
@@ -112,6 +119,9 @@ const canonical = Astro.url.href;
   svg path[fill="#9e8a78"],
   svg circle[fill="#9e8a78"],
   svg rect[fill="#9e8a78"]      { fill:   var(--gold) !important; }
+  /* Swiper pagination bullets */
+  .gallery-swiper .swiper-pagination-bullet,
+  .gallery-swiper .swiper-pagination-bullet-active { background: var(--gold); }
 
   /* Botón principal estilo barbería */
   .btn-gold {
