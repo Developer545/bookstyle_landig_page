@@ -15,12 +15,12 @@ import Footer from '../components/Footer.astro';
   ══════════════════════════════════════════ -->
   <section id="inicio" style="position:relative;height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;">
     <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1600&auto=format&fit=crop&q=80');background-size:cover;background-position:center;transform:scale(1.05);transition:transform 8s ease;"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(10,10,10,.95) 55%, rgba(10,10,10,.65));"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(var(--black-rgb),.95) 55%, rgba(var(--black-rgb),.65));"></div>
 
     <div class="hero-content" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:80px 24px 0;">
       <span class="section-label fade-up">Sistema ERP para Barberías y Salones</span>
       <h1 class="fade-up delay-1" style="font-family:'Prata',serif;font-size:clamp(2rem,5.5vw,4.6rem);color:#fff;line-height:1.1;margin:0 0 24px;max-width:700px;">
-        El sistema que necesita<br>tu <span style="color:#9e8a78;">barbería o salón</span>
+        El sistema que necesita<br>tu <span style="color:var(--gold);">barbería o salón</span>
       </h1>
       <p class="fade-up delay-2" style="font-size:clamp(14px,2.5vw,16px);color:#ddd;max-width:500px;line-height:1.9;margin:0 0 40px;">
         BookStyle centraliza tu agenda, caja, inventario, clientes y equipo en un solo panel. Simple. Sin complicaciones.
@@ -35,7 +35,7 @@ import Footer from '../components/Footer.astro';
   <!-- ═══════════════════════════════════════
        BARRA DE MÓDULOS
   ══════════════════════════════════════════ -->
-  <section style="background:#0a0a0a;padding:20px 0;overflow:hidden;">
+  <section style="background:var(--black);padding:20px 0;overflow:hidden;">
     <div class="modules-bar" style="max-width:1200px;margin:0 auto;padding:0 16px;gap:0;">
       {[
         { icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9e8a78" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`, label: 'Agenda Online' },
@@ -102,10 +102,10 @@ import Footer from '../components/Footer.astro';
         ].map((f, i) => (
           <div class="feature-card card-pad-lg" style="background:#fff;padding:44px 36px;position:relative;overflow:hidden;"
             data-aos="fade-up" data-aos-delay={String(i * 80)}>
-            <div style="position:absolute;top:0;left:0;width:3px;height:0;background:#9e8a78;transition:height .4s ease;" class="feature-accent"></div>
+            <div style="position:absolute;top:0;left:0;width:3px;height:0;background:var(--gold);transition:height .4s ease;" class="feature-accent"></div>
             <Fragment set:html={f.icon} />
-            <h3 style="font-family:'Prata',serif;font-size:1.25rem;color:#111;margin:20px 0 10px;">{f.nombre}</h3>
-            <p style="font-size:14px;line-height:1.8;color:#777;margin:0;">{f.desc}</p>
+            <h3 style="font-family:'Prata',serif;font-size:1.25rem;color:var(--text-dark);margin:20px 0 10px;">{f.nombre}</h3>
+            <p style="font-size:14px;line-height:1.8;color:var(--text-muted);margin:0;">{f.desc}</p>
           </div>
         ))}
       </div>
@@ -115,7 +115,7 @@ import Footer from '../components/Footer.astro';
   <!-- ═══════════════════════════════════════
        DEMO DEL BOOKING
   ══════════════════════════════════════════ -->
-  <section id="demo" class="section-pad" style="padding:100px 24px;background:#fcf9f5;">
+  <section id="demo" class="section-pad" style="padding:100px 24px;background:var(--cream);">
     <div style="max-width:1200px;margin:0 auto;">
       <div style="text-align:center;margin-bottom:60px;" data-aos="fade-up">
         <span class="section-label">Para tus clientes</span>
@@ -146,9 +146,9 @@ import Footer from '../components/Footer.astro';
         ].map((step, i) => (
           <div class="card-pad-lg" style="background:#fff;padding:44px 36px;"
             data-aos="fade-up" data-aos-delay={String(i * 150)}>
-            <div style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;margin-bottom:20px;">{step.n}</div>
-            <h3 style="font-family:'Prata',serif;font-size:1.35rem;color:#111;margin:0 0 14px;">{step.titulo}</h3>
-            <p style="font-size:14px;line-height:1.8;color:#777;margin:0;">{step.desc}</p>
+            <div style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">{step.n}</div>
+            <h3 style="font-family:'Prata',serif;font-size:1.35rem;color:var(--text-dark);margin:0 0 14px;">{step.titulo}</h3>
+            <p style="font-size:14px;line-height:1.8;color:var(--text-muted);margin:0;">{step.desc}</p>
           </div>
         ))}
       </div>
@@ -172,8 +172,8 @@ import Footer from '../components/Footer.astro';
           class="about-img"
           style="width:80%;aspect-ratio:3/4;object-fit:cover;box-shadow:0 16px 40px rgba(0,0,0,.18);"
         />
-        <div class="about-overlay-box" style="position:absolute;bottom:0;right:0;background:#0a0a0a;padding:22px 28px;max-width:220px;">
-          <div style="font-family:'Prata',serif;font-size:2rem;color:#9e8a78;line-height:1;">Todo</div>
+        <div class="about-overlay-box" style="position:absolute;bottom:0;right:0;background:var(--black);padding:22px 28px;max-width:220px;">
+          <div style="font-family:'Prata',serif;font-size:2rem;color:var(--gold);line-height:1;">Todo</div>
           <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-top:6px;">en un solo sistema</div>
         </div>
       </div>
@@ -192,12 +192,12 @@ import Footer from '../components/Footer.astro';
             { icon: '✓', titulo: 'Setup en menos de 24 horas', desc: 'Te ayudamos a configurar tu cuenta y migrar tu información.' },
           ].map(b => (
             <div style="display:flex;gap:16px;align-items:flex-start;">
-              <div style="width:28px;height:28px;background:#9e8a78;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+              <div style="width:28px;height:28px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
                 <span style="color:#fff;font-weight:700;font-size:14px;">{b.icon}</span>
               </div>
               <div>
-                <div style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#111;margin-bottom:3px;">{b.titulo}</div>
-                <div style="font-size:14px;color:#777;line-height:1.6;">{b.desc}</div>
+                <div style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:var(--text-dark);margin-bottom:3px;">{b.titulo}</div>
+                <div style="font-size:14px;color:var(--text-muted);line-height:1.6;">{b.desc}</div>
               </div>
             </div>
           ))}
@@ -210,11 +210,11 @@ import Footer from '../components/Footer.astro';
   <!-- ═══════════════════════════════════════
        GALERÍA — CARRUSEL
   ══════════════════════════════════════════ -->
-  <section style="background:#0a0a0a;padding:100px 0;overflow:hidden;">
+  <section style="background:var(--black);padding:100px 0;overflow:hidden;">
     <div style="max-width:1200px;margin:0 auto;padding:0 24px;margin-bottom:52px;" data-aos="fade-up">
       <span class="section-label" style="display:block;text-align:center;">Nuestros espacios</span>
       <h2 style="font-family:'Prata',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;text-align:center;margin:0 0 14px;">
-        Barberías y salones que <span style="color:#9e8a78;">eligen BookStyle</span>
+        Barberías y salones que <span style="color:var(--gold);">eligen BookStyle</span>
       </h2>
       <div class="section-divider center"></div>
       <p style="text-align:center;max-width:500px;margin:0 auto;font-size:15px;color:#888;line-height:1.9;">
@@ -238,7 +238,7 @@ import Footer from '../components/Footer.astro';
           <div class="swiper-slide">
             <img src={slide.src} alt={slide.label} loading="lazy" />
             <div class="slide-overlay">
-              <span style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#9e8a78;display:block;margin-bottom:4px;">BookStyle</span>
+              <span style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px;">BookStyle</span>
               <span style="font-family:'Prata',serif;font-size:1.1rem;color:#fff;">{slide.label}</span>
             </div>
           </div>
@@ -251,7 +251,7 @@ import Footer from '../components/Footer.astro';
   <!-- ═══════════════════════════════════════
        TESTIMONIALES
   ══════════════════════════════════════════ -->
-  <section id="testimoniales" class="section-pad" style="padding:100px 24px;background:#fcf9f5;">
+  <section id="testimoniales" class="section-pad" style="padding:100px 24px;background:var(--cream);">
     <div style="max-width:1200px;margin:0 auto;">
       <div style="text-align:center;margin-bottom:60px;" data-aos="fade-up">
         <span class="section-label">Lo que dicen nuestros clientes</span>
@@ -259,7 +259,7 @@ import Footer from '../components/Footer.astro';
         <div class="section-divider center"></div>
       </div>
 
-      <div class="cards-grid-320" style="background:#e0dbd4;">
+      <div class="cards-grid-320" style="background:var(--cream-border);">
         {[
           {
             inicial: 'C',
@@ -286,14 +286,14 @@ import Footer from '../components/Footer.astro';
           <div class="card-pad-lg" style="background:#fff;padding:44px 36px;"
             data-aos="zoom-in" data-aos-delay={String(i * 100)}>
             <div style="font-family:'Prata',serif;font-size:3rem;color:#f0ebe3;line-height:1;margin-bottom:16px;">"</div>
-            <p style="font-size:15px;line-height:1.9;color:#555;margin:0 0 28px;">{t.texto}</p>
+            <p style="font-size:15px;line-height:1.9;color:var(--text-dark-alt);margin:0 0 28px;">{t.texto}</p>
             <div style="display:flex;align-items:center;gap:14px;">
               <div style={`width:48px;height:48px;border-radius:50%;background:${i%2===0?'#0a0a0a':'#9e8a78'};display:flex;align-items:center;justify-content:center;flex-shrink:0;`}>
                 <span style="font-family:'Prata',serif;font-size:1.3rem;color:#fff;">{t.inicial}</span>
               </div>
               <div>
-                <div style="font-family:'Prata',serif;font-size:1rem;color:#111;">{t.nombre}</div>
-                <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9e8a78;">{t.negocio} · {t.ciudad}</div>
+                <div style="font-family:'Prata',serif;font-size:1rem;color:var(--text-dark);">{t.nombre}</div>
+                <div style="font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">{t.negocio} · {t.ciudad}</div>
               </div>
             </div>
           </div>
@@ -305,8 +305,8 @@ import Footer from '../components/Footer.astro';
   <!-- ═══════════════════════════════════════
        PRECIOS
   ══════════════════════════════════════════ -->
-  <section id="precios" class="section-pad" style="background:#0d0d0f;padding:100px 24px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#9e8a78 0,#9e8a78 1px,transparent 0,transparent 50%);background-size:12px 12px;"></div>
+  <section id="precios" class="section-pad" style="background:var(--black-deep);padding:100px 24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:12px 12px;"></div>
     <div style="position:relative;z-index:2;max-width:800px;margin:0 auto;">
       <span class="section-label" style="justify-content:center;display:block;" data-aos="fade-up">Planes y precios</span>
       <h2 style="font-family:'Prata',serif;font-size:clamp(2rem,4vw,3rem);color:#fff;margin:0 0 20px;" data-aos="fade-up" data-aos-delay="80">¿Cuánto cuesta BookStyle?</h2>
@@ -317,7 +317,7 @@ import Footer from '../components/Footer.astro';
       <div class="price-cards-wrap" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:48px;text-align:left;max-width:1040px;margin-left:auto;margin-right:auto;">
 
         <!-- BÁSICO -->
-        <div style="background:#1a1a1f;padding:44px 32px;position:relative;" data-aos="fade-up" data-aos-delay="0">
+        <div style="background:var(--black-soft);padding:44px 32px;position:relative;" data-aos="fade-up" data-aos-delay="0">
           <div style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;">Básico</div>
           <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:4px;">
             <span style="font-family:'Prata',serif;font-size:2.4rem;color:#fff;">$34.99</span>
@@ -336,8 +336,8 @@ import Footer from '../components/Footer.astro';
         </div>
 
         <!-- PROFESIONAL -->
-        <div style="background:#9e8a78;padding:44px 32px;position:relative;" data-aos="fade-up" data-aos-delay="150">
-          <div style="position:absolute;top:0;left:0;right:0;background:#7d6b5e;text-align:center;padding:7px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;">Más popular</div>
+        <div style="background:var(--gold);padding:44px 32px;position:relative;" data-aos="fade-up" data-aos-delay="150">
+          <div style="position:absolute;top:0;left:0;right:0;background:var(--gold-dark);text-align:center;padding:7px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;">Más popular</div>
           <div style="padding-top:28px;">
             <div style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px;">Profesional</div>
             <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:4px;">
@@ -358,8 +358,8 @@ import Footer from '../components/Footer.astro';
         </div>
 
         <!-- ENTERPRISE -->
-        <div style="background:#111111;padding:44px 32px;position:relative;border-top:2px solid #9e8a78;" data-aos="fade-up" data-aos-delay="300">
-          <div style="position:absolute;top:0;left:0;right:0;background:#9e8a78;text-align:center;padding:7px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;">Todo incluido</div>
+        <div style="background:var(--black-rich);padding:44px 32px;position:relative;border-top:2px solid #9e8a78;" data-aos="fade-up" data-aos-delay="300">
+          <div style="position:absolute;top:0;left:0;right:0;background:var(--gold);text-align:center;padding:7px;font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;">Todo incluido</div>
           <div style="padding-top:28px;">
             <div style="font-family:'Work Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;">Enterprise</div>
             <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:4px;">
@@ -405,12 +405,12 @@ import Footer from '../components/Footer.astro';
             { icon: '🌐', label: 'Demo de booking', val: 'bookstyle.app/agendar', href: '/agendar' },
           ].map(c => (
             <div style="display:flex;gap:16px;align-items:flex-start;">
-              <div style="width:44px;height:44px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <div style="width:44px;height:44px;background:var(--black);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <span style="font-size:18px;">{c.icon}</span>
               </div>
               <div>
-                <div style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9e8a78;margin-bottom:2px;">{c.label}</div>
-                <a href={c.href} style="font-size:15px;color:#111;text-decoration:none;">{c.val}</a>
+                <div style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;">{c.label}</div>
+                <a href={c.href} style="font-size:15px;color:var(--text-dark);text-decoration:none;">{c.val}</a>
               </div>
             </div>
           ))}
@@ -418,40 +418,40 @@ import Footer from '../components/Footer.astro';
       </div>
 
       <!-- Formulario lead → WhatsApp -->
-      <div class="contact-form-box" style="background:#fcf9f5;padding:48px 40px;" data-aos="fade-left">
-        <h3 style="font-family:'Prata',serif;font-size:1.5rem;color:#111;margin:0 0 28px;">Cuéntanos sobre tu negocio</h3>
+      <div class="contact-form-box" style="background:var(--cream);padding:48px 40px;" data-aos="fade-left">
+        <h3 style="font-family:'Prata',serif;font-size:1.5rem;color:var(--text-dark);margin:0 0 28px;">Cuéntanos sobre tu negocio</h3>
         <form id="demo-form" style="display:flex;flex-direction:column;gap:16px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-row">
             <div>
-              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Nombre *</label>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">Nombre *</label>
               <input id="lead-nombre" type="text" required placeholder="Tu nombre"
-                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
-                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+                style="width:100%;height:52px;border:2px solid var(--border-light);background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border-light)'" />
             </div>
             <div>
-              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">WhatsApp *</label>
+              <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">WhatsApp *</label>
               <input id="lead-tel" type="tel" required placeholder="+503 0000-0000"
-                style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
-                onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+                style="width:100%;height:52px;border:2px solid var(--border-light);background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border-light)'" />
             </div>
           </div>
           <div>
-            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Nombre del negocio *</label>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">Nombre del negocio *</label>
             <input id="lead-negocio" type="text" required placeholder="Tu Barbería o Salón"
-              style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
-              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+              style="width:100%;height:52px;border:2px solid var(--border-light);background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
+              onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border-light)'" />
           </div>
           <div>
-            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Ciudad</label>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">Ciudad</label>
             <input id="lead-ciudad" type="text" placeholder="San Salvador"
-              style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
-              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'" />
+              style="width:100%;height:52px;border:2px solid var(--border-light);background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
+              onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border-light)'" />
           </div>
           <div>
-            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#282828;display:block;margin-bottom:8px;">Mensaje <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
+            <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">Mensaje <span style="color:#aaa;font-weight:400;">(opcional)</span></label>
             <textarea id="lead-mensaje" rows="3" placeholder="¿Qué quieres gestionar? ¿Tienes alguna duda?"
-              style="width:100%;border:2px solid #eee;background:#fff;padding:12px 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;resize:none;transition:border-color .3s;box-sizing:border-box;"
-              onfocus="this.style.borderColor='#9e8a78'" onblur="this.style.borderColor='#eee'"></textarea>
+              style="width:100%;border:2px solid var(--border-light);background:#fff;padding:12px 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;resize:none;transition:border-color .3s;box-sizing:border-box;"
+              onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border-light)'"></textarea>
           </div>
           <div id="form-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;padding:12px 16px;font-size:14px;color:#dc2626;"></div>
           <button type="submit" class="btn-gold" style="width:100%;cursor:pointer;border:none;">
@@ -502,7 +502,7 @@ import Footer from '../components/Footer.astro';
 
   /* ── Grids de cards (features, demo, testimoniales, precios) ── */
   .cards-grid-320 { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:2px; background:#f0ebe3; }
-  .cards-grid-260 { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2px; background:#e0dbd4; }
+  .cards-grid-260 { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2px; background:var(--cream-border); }
   .cards-grid-240 { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));  gap:2px; }
   @media (max-width: 700px) {
     .cards-grid-320, .cards-grid-260, .cards-grid-240 {

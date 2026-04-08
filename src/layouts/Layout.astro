@@ -58,14 +58,66 @@ const canonical = Astro.url.href;
 </html>
 
 <style is:global>
+  /* ══════════════════════════════════════════════════
+     PALETA BOOKSTYLE — CSS Custom Properties
+     Cambia estos valores para rethemear el sitio completo
+  ══════════════════════════════════════════════════ */
+  :root {
+    /* Acento principal */
+    --gold:           #9e8a78;
+    --gold-dark:      #7d6b5e;
+    --gold-light:     #bfad9f;
+    --gold-rgb:       158, 138, 120;   /* para uso en rgba() */
+
+    /* Negros y oscuros */
+    --black:          #0a0a0a;         /* header, footer, galería, hero overlay */
+    --black-deep:     #0d0d0f;         /* fondo sección precios */
+    --black-soft:     #1a1a1f;         /* card básico (precios) */
+    --black-rich:     #111111;         /* card enterprise, texto premium */
+    --black-rgb:      10, 10, 10;      /* para uso en rgba() */
+
+    /* Cremas y claros */
+    --cream:          #fcf9f5;         /* fondo secciones claras */
+    --cream-dark:     #f0ebe3;         /* variante oscura de cream */
+    --cream-border:   #e0dbd4;         /* separadores en grids claros */
+
+    /* Texto */
+    --text-dark:      #111111;         /* títulos y texto principal */
+    --text-muted:     #777777;         /* texto secundario */
+    --text-light:     #999999;         /* texto sutil (footer, sublabels) */
+    --text-hero:      #dddddd;         /* texto sobre fondos muy oscuros */
+    --text-dark-alt:  #555555;         /* citas / testimoniales */
+
+    /* Bordes */
+    --border-light:   #eeeeee;         /* inputs y cards claras */
+    --border-dark:    #333333;         /* separadores en secciones oscuras */
+    --border-mid:     #1f1f1f;         /* borde menú móvil */
+
+    /* Fondos de UI */
+    --white:          #ffffff;
+    --form-bg:        #fcf9f5;         /* fondo del formulario */
+  }
+
   html { scroll-behavior: smooth; }
   *, *::before, *::after { box-sizing: border-box; }
+
+  /* ── SVG icon override: todos los iconos gold siguen --gold automáticamente ── */
+  svg path[stroke="#9e8a78"],
+  svg line[stroke="#9e8a78"],
+  svg rect[stroke="#9e8a78"],
+  svg circle[stroke="#9e8a78"],
+  svg polyline[stroke="#9e8a78"],
+  svg polygon[stroke="#9e8a78"],
+  svg ellipse[stroke="#9e8a78"] { stroke: var(--gold) !important; }
+  svg path[fill="#9e8a78"],
+  svg circle[fill="#9e8a78"],
+  svg rect[fill="#9e8a78"]      { fill:   var(--gold) !important; }
 
   /* Botón principal estilo barbería */
   .btn-gold {
     display: inline-block;
-    background: #9e8a78;
-    color: #fff;
+    background: var(--gold);
+    color: var(--white);
     font-family: 'Work Sans', sans-serif;
     font-size: 12px;
     font-weight: 600;
@@ -85,7 +137,7 @@ const canonical = Astro.url.href;
     content: '';
     position: absolute;
     inset: 0;
-    background: #0a0a0a;
+    background: var(--black);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform .4s ease;
@@ -96,8 +148,8 @@ const canonical = Astro.url.href;
 
   .btn-outline {
     display: inline-block;
-    border: 2px solid #fff;
-    color: #fff;
+    border: 2px solid var(--white);
+    color: var(--white);
     font-family: 'Work Sans', sans-serif;
     font-size: 12px;
     font-weight: 600;
@@ -109,7 +161,7 @@ const canonical = Astro.url.href;
     cursor: pointer;
     transition: background .3s, color .3s;
   }
-  .btn-outline:hover { background: #fff; color: #0a0a0a; }
+  .btn-outline:hover { background: var(--white); color: var(--black); }
 
   /* Section headings */
   .section-label {
@@ -118,7 +170,7 @@ const canonical = Astro.url.href;
     font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #9e8a78;
+    color: var(--gold);
     display: block;
     margin-bottom: 12px;
   }
@@ -126,13 +178,13 @@ const canonical = Astro.url.href;
     font-family: 'Prata', serif;
     font-size: clamp(1.8rem, 4vw, 2.6rem);
     line-height: 1.2;
-    color: #111;
+    color: var(--text-dark);
     margin: 0 0 20px;
   }
   .section-divider {
     width: 60px;
     height: 2px;
-    background: #9e8a78;
+    background: var(--gold);
     margin: 16px 0 28px;
   }
   .section-divider.center { margin-left: auto; margin-right: auto; }
@@ -193,7 +245,7 @@ const canonical = Astro.url.href;
   .gallery-swiper .slide-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,.88) 0%, rgba(10,10,10,.05) 55%);
+    background: linear-gradient(to top, rgba(var(--black-rgb),.88) 0%, rgba(var(--black-rgb),.05) 55%);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
