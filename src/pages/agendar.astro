@@ -143,7 +143,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
         <h2 style="font-family:'Prata',serif;font-size:1.8rem;color:var(--text-dark);margin:0 0 8px;">Elige fecha y hora</h2>
         <p style="font-size:14px;color:#777;margin:0 0 24px;">Selecciona el día y horario disponible.</p>
         <!-- Flatpickr inline -->
-        <div id="date-calendar" style="margin-bottom:32px;display:flex;justify-content:center;">
+        <div id="date-calendar" style="margin-bottom:32px;width:100%;">
           <input id="fp-input" type="text" style="display:none;" readonly />
         </div>
         <div id="slots-wrap" style="display:none;">
@@ -313,45 +313,85 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     #wa-notify { justify-content:center !important; width:100% !important; }
   }
 
-  /* ── Flatpickr theme BookStyle ── */
-  .flatpickr-calendar {
+  /* ── Flatpickr theme BookStyle — responsive full-width ── */
+
+  /* Contenedor principal: ocupa todo el ancho del padre */
+  #date-calendar { display:block !important; }
+  .flatpickr-calendar.inline {
+    position:static !important; display:block !important; visibility:visible !important;
+    opacity:1 !important; top:auto !important;
     background:#fff !important;
     border:1.5px solid var(--border-light) !important;
     border-radius:0 !important;
     box-shadow:0 8px 32px rgba(0,0,0,.10) !important;
     font-family:'Work Sans',sans-serif !important;
-    width:100% !important;
-    max-width:420px !important;
+    /* FULL WIDTH — ningún max-width propio */
+    width:100% !important; max-width:100% !important; min-width:0 !important;
   }
-  .flatpickr-months { background:var(--black) !important; padding:12px 8px !important; }
+
+  /* La cadena interna que Flatpickr fija en px */
+  .flatpickr-calendar.inline .flatpickr-innerContainer,
+  .flatpickr-calendar.inline .flatpickr-rContainer,
+  .flatpickr-calendar.inline .flatpickr-days,
+  .flatpickr-calendar.inline .dayContainer {
+    width:100% !important; max-width:100% !important; min-width:0 !important;
+  }
+
+  /* Cabecera — mes/año */
+  .flatpickr-months { background:var(--black) !important; padding:14px 12px !important; }
   .flatpickr-month  { color:#fff !important; fill:#fff !important; }
-  .flatpickr-current-month { font-family:'Prata',serif !important; font-size:1.1rem !important; color:#fff !important; padding:0 !important; }
-  .flatpickr-current-month .flatpickr-monthDropdown-months { color:#fff !important; background:var(--black) !important; font-family:'Prata',serif !important; }
-  .flatpickr-current-month input.cur-year { color:#fff !important; font-family:'Work Sans',sans-serif !important; font-weight:700 !important; }
-  .flatpickr-prev-month, .flatpickr-next-month { color:#fff !important; fill:#fff !important; transition:opacity .2s !important; }
-  .flatpickr-prev-month:hover, .flatpickr-next-month:hover { color:var(--gold) !important; fill:var(--gold) !important; }
-  .flatpickr-weekdays { background:var(--black) !important; padding-bottom:8px !important; }
-  .flatpickr-weekday { color:var(--gold) !important; font-family:'Work Sans',sans-serif !important; font-size:9px !important; font-weight:700 !important; letter-spacing:1.5px !important; }
+  .flatpickr-current-month {
+    font-family:'Prata',serif !important; font-size:1.15rem !important;
+    color:#fff !important; padding:0 !important; width:auto !important;
+  }
+  .flatpickr-current-month .flatpickr-monthDropdown-months {
+    color:#fff !important; background:var(--black) !important;
+    font-family:'Prata',serif !important; font-size:1.1rem !important;
+  }
+  .flatpickr-current-month input.cur-year {
+    color:#fff !important; font-family:'Work Sans',sans-serif !important; font-weight:700 !important;
+    font-size:1rem !important;
+  }
+  .flatpickr-prev-month svg, .flatpickr-next-month svg { fill:#fff !important; }
+  .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill:var(--gold) !important; }
+
+  /* Días de la semana */
+  .flatpickr-weekdays { background:var(--black) !important; padding-bottom:10px !important; width:100% !important; }
+  .flatpickr-weekday  {
+    color:var(--gold) !important; font-family:'Work Sans',sans-serif !important;
+    font-size:10px !important; font-weight:700 !important; letter-spacing:1.5px !important;
+    flex:1 !important;
+  }
+
+  /* Celdas de día: usar flex:1 para que rellenen el ancho disponible */
   .flatpickr-day {
-    font-family:'Work Sans',sans-serif !important; font-weight:600 !important;
+    font-family:'Work Sans',sans-serif !important; font-weight:600 !important; font-size:13px !important;
     border-radius:0 !important; border:1px solid transparent !important;
     color:var(--text-dark) !important; transition:all .15s !important;
+    flex:1 !important; max-width:none !important;
+    /* altura proporcional al ancho calculado por flex */
+    height:42px !important; line-height:42px !important;
   }
   .flatpickr-day:hover:not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
     background:var(--cream) !important; border-color:var(--gold) !important; color:var(--gold) !important;
   }
-  .flatpickr-day.today { border-color:var(--gold) !important; font-weight:700 !important; }
-  .flatpickr-day.today:hover { background:var(--gold) !important; color:#fff !important; }
+  .flatpickr-day.today        { border-color:var(--gold) !important; font-weight:700 !important; }
+  .flatpickr-day.today:hover  { background:var(--gold) !important; color:#fff !important; }
   .flatpickr-day.selected, .flatpickr-day.selected:hover {
     background:var(--black) !important; border-color:var(--black) !important;
     color:#fff !important; box-shadow:inset 3px 0 0 var(--gold) !important;
   }
-  .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
-    color:#ccc !important; background:#f9f9f9 !important; cursor:not-allowed !important;
+  .flatpickr-day.flatpickr-disabled,
+  .flatpickr-day.prevMonthDay,
+  .flatpickr-day.nextMonthDay {
+    color:#ccc !important; background:#f9f9f9 !important;
+    cursor:not-allowed !important; opacity:1 !important;
   }
+
   @media (max-width:480px) {
-    .flatpickr-calendar { max-width:100% !important; }
-    .flatpickr-day { font-size:12px !important; }
+    .flatpickr-day { font-size:11px !important; height:36px !important; line-height:36px !important; }
+    .flatpickr-weekday { font-size:9px !important; letter-spacing:0.5px !important; }
+    .flatpickr-current-month { font-size:1rem !important; }
   }
 
   /* ── Slots ── */
