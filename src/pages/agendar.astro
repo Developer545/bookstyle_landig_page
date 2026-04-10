@@ -204,7 +204,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
             </div>
             <div>
               <label style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dark);display:block;margin-bottom:8px;">Teléfono / WhatsApp *</label>
-              <input id="f-phone" type="tel" required placeholder="+503 0000-0000"
+              <input id="f-phone" type="tel" required placeholder="+503 6677-4865"
                 style="width:100%;height:52px;border:2px solid #eee;background:#fff;padding:0 16px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:border-color .3s;box-sizing:border-box;"
                 onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#eee'" />
             </div>
@@ -1026,7 +1026,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE ?? 'https://speeddan-barberia.v
     }
     // WhatsApp al negocio desde el cliente (confirmación personal)
     const waMsg = encodeURIComponent(`¡Hola ${state.tenant.name}! Confirmé mi cita:\n• Servicios: ${svcNames}\n• Profesional: ${data.barberName}\n• ${dateStr} a las ${timeStr}`);
-    const waPhone = state.tenant.phone ? state.tenant.phone.replace(/\D/g,'') : '50300000000';
+      const waPhone = state.tenant.phone ? state.tenant.phone.replace(/\D/g,'') : '50366774865';
     $('confirm-wa').href = `https://wa.me/${waPhone}?text=${waMsg}`;
 
     $('step-indicator').style.opacity = '0.4';
